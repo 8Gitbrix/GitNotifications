@@ -1,5 +1,5 @@
 from flask import request
-from flask import 
+from flask import Flask
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
 import requests
