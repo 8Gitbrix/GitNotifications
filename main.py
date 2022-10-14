@@ -1,8 +1,11 @@
 from flask import request
-from flask import Flask
+from flask import 
+from slack_sdk import WebClient
+from slack_sdk.errors import SlackApiError
 import requests
 
 app = Flask(__name__)
+client = WebClient(token=os.environ['SLACK_BOT_TOKEN'])
 
 
 @app.route('/')
