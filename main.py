@@ -1,13 +1,14 @@
+import os
 from flask import request
 from flask import Flask
+from flask_ngrok import run_with_ngrok
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
 from dotenv import load_dotenv
-import requests
-import os
 
 app = Flask(__name__)
 load_dotenv(".env")
+run_with_ngrok(app)
 client = WebClient(token=os.environ['SLACK_BOT_TOKEN'])
 
 
