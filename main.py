@@ -2,9 +2,12 @@ from flask import request
 from flask import Flask
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
+from dotenv import load_dotenv
 import requests
+import os
 
 app = Flask(__name__)
+load_dotenv(".env")
 client = WebClient(token=os.environ['SLACK_BOT_TOKEN'])
 
 
@@ -23,13 +26,15 @@ def prComment():
 
 
 def sendComment(message: str):
-    payload = '{"text": "%s"}' % message
-    print(payload)
-    response = requests.post(
-        "https://hooks.slack.com/services/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",
-        data=payload
-    )
-    print(response.text)
+    try:
+        response = client.chat_postMessage(channel='#general', text=message)
+        assert response["message"]["text"] == "Hello world!"
+    except SlackApiError as e:
+        # You will get a SlackApiError if "ok" is False
+        assert e.response["ok"] is False
+        assert e.response["error"]  # str like 'invalid_auth', 'channel_not_found'
+        print(f"Got an error: {e.response['error']}")
+
 
 
 if __name__ == '__main__':
